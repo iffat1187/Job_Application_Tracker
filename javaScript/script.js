@@ -73,4 +73,29 @@ getId.classList.add("bg-[#3b82f6]", "text-white");
 
  
 
+//   all card loop and push array 
 
+// domcontentloaded -> auto page load and store 
+document.addEventListener("DOMContentLoaded" , function() {
+    for ( let card of  allCard ){
+     let companyName = card.querySelector(".company-name").innerText;
+     let skillName = card.querySelector(".skill-name").innerText;
+     let jobLocation = card.querySelector(".job-detail").innerText;
+     let status = card.querySelector(".status").innerText;
+     let notes = card.querySelector(".notes").innerText;
+
+     let cardObj = { 
+        companyName,
+        skillName,
+        jobLocation ,
+        status,
+        notes
+     } 
+      allCardList.push(cardObj);
+        
+}
+//  totalJOb.innerText = allCardList.length;
+
+calculateCount();
+
+});
