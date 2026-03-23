@@ -19,6 +19,10 @@ const allCardSection = document.getElementById("all-card");
 const interviewFilterSection = document.getElementById("interview-card");
 const rejectedFilterSection = document.getElementById("rejected-card");
 
+const availableJobCount = document.getElementById("available-job-total");
+let availableInterViewCount = document.getElementById("interview-available");
+let availableRejectedCount = document.getElementById("rejected-available");
+
 
 // array declare 
 let allCardList = [] ;
@@ -43,16 +47,12 @@ function calculateCount(){
     totalJOb.innerText = allCardList.length ;
     interviewJOb.innerText = interviewList.length;
     rejectedJOb.innerText =  rejectedList.length ;
+
+    // 
+    availableJobCount.innerText = allCardList.length;
+    availableInterViewCount.innerText = interviewList.length;
+    availableRejectedCount.innerText = rejectedList.length;
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -123,6 +123,9 @@ function calculateCount(){
 
 // domcontentloaded -> auto page load and store 
 document.addEventListener("DOMContentLoaded" , function() {
+    // for available jobs
+    showFilterBtn("all-filter-btn");
+
     for ( let card of  allCard ){
      let companyName = card.querySelector(".company-name").innerText;
      let skillName = card.querySelector(".skill-name").innerText;
@@ -140,9 +143,13 @@ document.addEventListener("DOMContentLoaded" , function() {
       allCardList.push(cardObj);
         
 }
+
+
 //  totalJOb.innerText = allCardList.length;
 
 calculateCount();
+
+// available 
 
 });
 
@@ -155,15 +162,37 @@ calculateCount();
 
 
 
-
-
-
-
 // main card
 mainContainer.addEventListener("click", function(event){
+
+    // delete function
+    if (event.target.closest(".delete-btn")) {
+        let parentNode = event.target.closest(".card");
+        let companyName = parentNode.querySelector(".company-name").innerText;
+
+        allCardList = allCardList.filter(item => item.companyName !== companyName);
+
+        interviewList = interviewList.filter(item => item.companyName !== companyName);
+
+        rejectedList = rejectedList.filter(item => item.companyName !== companyName);
+
+        parentNode.remove();
+        calculateJobCount();
+        showRenderInterview();
+       showRenderReject();
+        
+
+        if (allCardList.length === 0) {
+            showEmptyCard(allCardSection);
+        }else if(interviewList.length === 0){
+            showEmptyCard(interviewFilterSection);
+
+        }
+
+
         
 //  if 
-        if (event.target.classList.contains("interview-btn")){
+    }else if (event.target.classList.contains("interview-btn")){
         let parentNode = event.target.closest(".card");
         let companyName = parentNode.querySelector(".company-name").innerText;
         let skillName = parentNode.querySelector(".skill-name").innerText;
@@ -192,6 +221,11 @@ mainContainer.addEventListener("click", function(event){
         // toggle button for filter and rejected 
         
        rejectedList = rejectedList.filter(item => item.companyName !== cardInfoObj.companyName);
+      
+
+       statusEle.classList.remove("bg-red-200", "text-red-700", "border-red-500");
+        statusEle.classList.add("bg-green-200", "text-green-700", "border-2", "border-green-500");
+
        calculateCount();
        showRenderInterview();
        showRenderReject();
@@ -226,6 +260,9 @@ mainContainer.addEventListener("click", function(event){
         
        
          interviewList = interviewList.filter(item => item.companyName !== cardInfoObj.companyName);
+        //  for color
+         statusEle.classList.remove("bg-green-200", "text-green-700", "border-green-500");
+        statusEle.classList.add("bg-red-200", "text-red-700", "border-2", "border-red-500");
        calculateCount();
        showRenderReject();
        showRenderInterview();
@@ -234,44 +271,32 @@ mainContainer.addEventListener("click", function(event){
     
 })
 
+//  epmty card when nothing is selected 
 
+function showEmptyCard(section) {
 
+    section.innerHTML = "";
 
+    let div = document.createElement("div");
+    div.className = "card flex justify-between p-5 shadow bg-white rounded-xs mx-auto";
+    div.innerHTML = `
+           <div class="flex justify-center items-center mx-auto py-17">
+            <div>
+                <img class="mx-auto mb-3" src="./jobs.png" alt="">
+                <h5 class="font-semibold text-2xl text-center">No jobs available</h5>
+                <p class="font-medium opacity-45 text-center">Check back soon for new job opportunities</p>
+            </div>
+        </div>
+    `;
 
+    section.appendChild(div);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 if (rejectedList.length === 0) {
     showEmptyCard(rejectedFilterSection);
+    
 }
 
 // showcasing rejected cards 
