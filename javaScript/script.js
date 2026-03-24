@@ -1,5 +1,3 @@
-
-// count section 
 const totalJOb = document.getElementById("total");
 const interviewJOb = document.getElementById("interview");
 const rejectedJOb = document.getElementById("rejected");
@@ -24,43 +22,25 @@ let availableInterViewCount = document.getElementById("interview-available");
 let availableRejectedCount = document.getElementById("rejected-available");
 
 
-// array declare 
+// array declare for storing the cards for each section
 let allCardList = [] ;
 let interviewList = [];
 let rejectedList = [];
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// counting total job = array length 
+// count the available , total jobs by array length
 function calculateCount(){
     totalJOb.innerText = allCardList.length ;
     interviewJOb.innerText = interviewList.length;
     rejectedJOb.innerText =  rejectedList.length ;
 
-    // 
+    // changing the value of jobs when they are selected like 2 inteview selected then shows 2jobs
     availableJobCount.innerText = allCardList.length;
     availableInterViewCount.innerText = interviewList.length;
     availableRejectedCount.innerText = rejectedList.length;
 }
 
-
-
-
-
-
-
-
+// all interview and reject button changes color when it is clicked 
 
 // filter button toggle 
  function showFilterBtn(id) {
@@ -112,11 +92,6 @@ function calculateCount(){
 
 };
 
-
-
-
-
-
  
 
 //   all card loop and push array 
@@ -149,20 +124,13 @@ document.addEventListener("DOMContentLoaded" , function() {
 
 calculateCount();
 
-// available 
+
 
 });
 
 
 
-
-
-
-
-
-
-
-// main card
+// main card event functionalities
 mainContainer.addEventListener("click", function(event){
 
     // delete function
@@ -191,7 +159,7 @@ mainContainer.addEventListener("click", function(event){
 
 
         
-//  if 
+//  targeting specific inteview button then status changes and getting all the elements of that card
     }else if (event.target.classList.contains("interview-btn")){
         let parentNode = event.target.closest(".card");
         let companyName = parentNode.querySelector(".company-name").innerText;
@@ -211,7 +179,7 @@ mainContainer.addEventListener("click", function(event){
         status,
         notes
      } 
-    //  Es6 javascript 
+    //  Es6 javascript .find loop
     let interViewExist = interviewList.find(item => item.companyName === cardInfoObj.companyName);
   
         if (!interViewExist) {
@@ -271,7 +239,7 @@ mainContainer.addEventListener("click", function(event){
     
 })
 
-//  epmty card when nothing is selected 
+//  empty card when nothing is selected 
 
 function showEmptyCard(section) {
 
@@ -370,12 +338,13 @@ function showRenderReject() {
 
 }
 
-// console.log(rejectedList); 
+// when nothing is selected 
 
 if (interviewList.length === 0) {
     showEmptyCard(interviewFilterSection);
 }
 
+// displaying the selected interview cards
 function showRenderInterview() { 
 
     interviewFilterSection.innerHTML = "";
